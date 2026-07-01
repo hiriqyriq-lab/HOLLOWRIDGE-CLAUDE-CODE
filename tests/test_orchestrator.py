@@ -184,3 +184,22 @@ class TestSystemPrompt:
         orch.append_session_log("CONTENT_AGENT", "abcdef12", "did something")
         prompt = orch.build_system_prompt("CONTENT_AGENT", {})
         assert "RECENT OUTPUTS" in prompt
+
+
+class TestConfigCheck:
+    def test_fails_without_api_key(self, monkeypatch, capsys):
+        monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+        assert orch.run_config_check() is False
+        assert "[FAIL]" in capsys.readouterr().out
+
+    def test_passes_with_api_key(self, monkeypatch, capsys):
+        monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-fake")
+        assert orch.run_config_check() is True
+        assert "CONFIG OK" in capsys.readouterr().out
+
+    def test_makes_no_network_calls(self, monkeypatch):
+        # anthropic.Anthropic() must never be constructed by --check
+        monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-fake")
+        monkeypatch.setattr(orch.anthropic, "Anthropic",
+                             lambda *a, **k: (_ for _ in ()).throw(AssertionError("should not construct client")))
+        orch.run_config_check()
