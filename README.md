@@ -71,3 +71,14 @@ If closing a GitHub issue fails after a task completes, it no longer gets
 reprocessed on the next cycle — local completion records in
 `tasks/completed/` are now the source of truth, independent of the GitHub
 API call succeeding. See `PHASE_7_SYNTHESIS.md`.
+
+## Tests (Phase 8)
+
+```bash
+pip install -r requirements-dev.txt
+python3 -m pytest tests/ -v
+```
+
+28 tests covering the lock, canon write-back, budget circuit breaker, and
+GitHub Issue idempotency mechanisms. Runs automatically on every PR via
+`.github/workflows/tests.yml`. See `PHASE_8_SYNTHESIS.md`.
