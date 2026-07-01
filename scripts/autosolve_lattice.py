@@ -40,7 +40,7 @@ SOLVE_LOG = DATA_DIR / "SOLVE_LOG.md"
 
 SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+|\n{2,}")
 MAX_EXCERPTS = 8          # max source sentences per node in its contrapolation doc
-MAX_NODES_PER_RUN = 200   # safety cap — avoids runaway on first run with 800+ nodes
+MAX_NODES_PER_RUN = 100   # 13 runs/hour × 100 nodes = 1,300 solves/hour across the lattice
 
 
 # ── Loaders ───────────────────────────────────────────────────────────────────
