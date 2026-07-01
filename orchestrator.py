@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, json, time, uuid, logging, traceback, argparse
+import os, json, time, uuid, socket, logging, traceback, argparse, subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 import anthropic
@@ -18,10 +18,16 @@ CANON_FILE    = MEMORY_DIR/"canon.json"
 SESSION_LOG   = MEMORY_DIR/"session_log.md"
 ERROR_LOG     = LOGS_DIR/"errors.log"
 ACTIVITY_LOG  = LOGS_DIR/"activity.log"
+LOCK_FILE     = TASKS_DIR/".lock.json"
 
 MODEL         = os.getenv("NIL_AGENCY_MODEL","claude-sonnet-4-6")
 MAX_TOKENS    = int(os.getenv("NIL_AGENCY_MAX_TOKENS","8096"))
 POLL_INTERVAL = int(os.getenv("NIL_AGENCY_POLL_INTERVAL","60"))
+LOCK_TTL      = int(os.getenv("NIL_AGENCY_LOCK_TTL","900"))   # 15 min: local pm2 (thesis)
+                                                                # and scheduled runs (antithesis)
+                                                                # can otherwise both claim the same
+                                                                # task — see PHASE_3_SYNTHESIS.md
+GIT_SYNC      = os.getenv("NIL_AGENCY_GIT_SYNC","0") == "1"
 
 LOGS_DIR.mkdir(exist_ok=True)
 logging.basicConfig(level=logging.INFO,
@@ -33,6 +39,58 @@ def log_error(ctx, err):
     with open(ERROR_LOG,"a") as f:
         f.write(f"\n[{datetime.now(timezone.utc).isoformat()}] {ctx}:\n{traceback.format_exc()}\n")
     log.error(f"{ctx}: {err}")
+
+# ── Cross-environment lock (Phase 3) ────────────────────────────────────────────
+# Phase 1 (local/pm2) runs a perpetual loop; Phase 2 (GitHub Actions) runs on an
+# hourly cron. Nothing stopped both from claiming the same queue.json entry at
+# once. This lock makes "who's currently working" explicit and visible in git,
+# so the two execution modes cooperate instead of racing.
+
+def holder_id(mode: str) -> str:
+    return f"{mode}:{socket.gethostname()}:{os.getpid()}"
+
+def acquire_lock(mode: str) -> bool:
+    TASKS_DIR.mkdir(exist_ok=True)
+    if LOCK_FILE.exists():
+        try:
+            held = json.loads(LOCK_FILE.read_text())
+            age = time.time() - datetime.fromisoformat(held["acquired_at"]).timestamp()
+            if age < LOCK_TTL and held["holder"] != holder_id(mode):
+                log.info(f"Lock held by {held['holder']} ({age:.0f}s old, ttl {LOCK_TTL}s) — yielding this cycle")
+                return False
+        except Exception:
+            pass  # corrupt/partial lock file — treat as stale, reclaim it
+    LOCK_FILE.write_text(json.dumps({
+        "holder": holder_id(mode), "mode": mode,
+        "acquired_at": datetime.now(timezone.utc).isoformat()
+    }, indent=2))
+    return True
+
+def release_lock():
+    if LOCK_FILE.exists():
+        try: LOCK_FILE.unlink()
+        except Exception: pass
+
+# ── Git sync (Phase 3) ──────────────────────────────────────────────────────────
+# Phase 2's GitHub Actions workflow commits outputs/memory/tasks back to the repo
+# after every run, so cloud-run canon stays authoritative in git. Phase 1's local
+# mode never did — a local run's canon.json and session_log.md only ever existed
+# on disk, invisible to the next cloud run. --git-sync (or NIL_AGENCY_GIT_SYNC=1)
+# closes that gap by giving local mode the same commit-back behavior.
+
+def git_sync(task_id: str):
+    if not GIT_SYNC:
+        return
+    try:
+        subprocess.run(["git","add","outputs/","memory/","tasks/completed/"], cwd=BASE_DIR, check=False)
+        diff = subprocess.run(["git","diff","--cached","--quiet"], cwd=BASE_DIR)
+        if diff.returncode == 0:
+            return  # nothing staged
+        subprocess.run(["git","commit","-m",f"NIL AGENCY local sync — {task_id[:8]}"], cwd=BASE_DIR, check=False)
+        subprocess.run(["git","push"], cwd=BASE_DIR, check=False)
+        log.info("  git-sync: pushed local run outputs")
+    except Exception as e:
+        log.warning(f"git-sync skipped: {e}")
 
 def load_canon():
     try: return json.loads(CANON_FILE.read_text()) if CANON_FILE.exists() else {}
@@ -152,7 +210,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--cycles",type=int,default=0)
     parser.add_argument("--mode",default="local",choices=["local","github-actions"])
+    parser.add_argument("--git-sync",action="store_true",help="commit+push outputs/memory after each task (local mode)")
     args = parser.parse_args()
+    global GIT_SYNC
+    GIT_SYNC = GIT_SYNC or args.git_sync
 
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
@@ -182,6 +243,9 @@ def main():
             log.info(f"Done: {cycle} cycles"); break
         cycle += 1
         log.info(f"-- Cycle {cycle} --")
+        if not acquire_lock(args.mode):
+            time.sleep(min(POLL_INTERVAL, 30) if args.mode=="local" else 5)
+            continue
         try:
             canon = load_canon()
             tasks = read_queue(gh)
@@ -196,14 +260,17 @@ def main():
             complete_task(task, opath, summary, gh)
             append_session_log(task["agent"], task["task_id"], summary)
             if task["agent"]=="CONTENT_AGENT" and dist: dist(text)
+            git_sync(task["task_id"])
         except anthropic.RateLimitError:
             log.warning("Rate limited 60s"); time.sleep(60)
         except anthropic.APIError as e:
             log_error("api",e); time.sleep(30)
         except KeyboardInterrupt:
-            log.info("Shutdown."); break
+            log.info("Shutdown."); release_lock(); break
         except Exception as e:
             log_error("loop",e); time.sleep(10)
+        finally:
+            release_lock()
         if not (args.cycles and cycle>=args.cycles):
             if args.mode=="local": time.sleep(POLL_INTERVAL)
 
