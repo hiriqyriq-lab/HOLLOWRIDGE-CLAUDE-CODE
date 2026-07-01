@@ -101,6 +101,34 @@ def save_canon(canon):
     canon["last_updated"] = datetime.now(timezone.utc).isoformat()
     CANON_FILE.write_text(json.dumps(canon, indent=2))
 
+# ── Canon write-back (Phase 4) ───────────────────────────────────────────────────
+# save_canon() existed since Phase 2 but nothing ever called it: every cycle loaded
+# canon.json to inject "ESTABLISHED CANON" into the system prompt, but no output
+# was ever recorded back into it. confirmed_lore/confirmed_copy/etc. stayed empty
+# forever — the continuity mechanism was decorative. This closes the loop.
+
+CANON_SECTION = {
+    "WORLDBUILDING_AGENT": ("worldbuilding", "confirmed_lore"),
+    "BRAND_AGENT":         ("brand",         "confirmed_copy"),
+    "RESEARCH_AGENT":      ("research",      "completed_syntheses"),
+    "CONTENT_AGENT":       ("content",       "published_topics"),
+    "MUSIC_AGENT":         ("music",         "released_content"),
+    "CODE_AGENT":          ("code",          "changes"),
+}
+
+def update_canon(canon, task, summary, output_path):
+    section, key = CANON_SECTION.get(task.get("agent","CONTENT_AGENT"), ("content","published_topics"))
+    canon.setdefault(section, {})
+    canon[section].setdefault(key, [])
+    canon[section][key].append({
+        "task_id": task["task_id"],
+        "instruction": task["instruction"][:200],
+        "summary": summary,
+        "output_path": output_path,
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
+    })
+    return canon
+
 def append_session_log(agent, task_id, summary):
     MEMORY_DIR.mkdir(exist_ok=True)
     ts = datetime.now(timezone.utc).isoformat()
@@ -259,6 +287,7 @@ def main():
             opath, summary, text = run_agent(client, task, canon)
             complete_task(task, opath, summary, gh)
             append_session_log(task["agent"], task["task_id"], summary)
+            save_canon(update_canon(canon, task, summary, opath))
             if task["agent"]=="CONTENT_AGENT" and dist: dist(text)
             git_sync(task["task_id"])
         except anthropic.RateLimitError:
