@@ -1999,6 +1999,506 @@
       "solved_at": "2026-07-01T20:30:10.232135+00:00",
       "type": "coordinate",
       "label": "Coordinate 520"
+    },
+    "coord_539": {
+      "solved_at": "2026-07-01T20:30:43.073846+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 539"
+    },
+    "coord_532": {
+      "solved_at": "2026-07-01T20:30:43.087401+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 532"
+    },
+    "coord_596": {
+      "solved_at": "2026-07-01T20:30:43.119254+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 596"
+    },
+    "coord_656": {
+      "solved_at": "2026-07-01T20:30:43.151460+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 656"
+    },
+    "coord_635": {
+      "solved_at": "2026-07-01T20:30:43.169928+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 635"
+    },
+    "coord_507": {
+      "solved_at": "2026-07-01T20:30:43.192310+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 507"
+    },
+    "coord_580": {
+      "solved_at": "2026-07-01T20:30:43.208001+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 580"
+    },
+    "coord_576": {
+      "solved_at": "2026-07-01T20:30:43.239748+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 576"
+    },
+    "coord_639": {
+      "solved_at": "2026-07-01T20:30:43.260401+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 639"
+    },
+    "coord_544": {
+      "solved_at": "2026-07-01T20:30:43.273540+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 544"
+    },
+    "coord_448": {
+      "solved_at": "2026-07-01T20:30:43.287909+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 448"
+    },
+    "coord_523": {
+      "solved_at": "2026-07-01T20:30:43.300851+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 523"
+    },
+    "coord_534": {
+      "solved_at": "2026-07-01T20:30:43.313817+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 534"
+    },
+    "coord_496": {
+      "solved_at": "2026-07-01T20:30:43.345805+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 496"
+    },
+    "coord_408": {
+      "solved_at": "2026-07-01T20:30:43.359749+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 408"
+    },
+    "coord_543": {
+      "solved_at": "2026-07-01T20:30:43.372775+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 543"
+    },
+    "coord_403": {
+      "solved_at": "2026-07-01T20:30:43.386462+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 403"
+    },
+    "coord_424": {
+      "solved_at": "2026-07-01T20:30:43.400235+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 424"
+    },
+    "coord_537": {
+      "solved_at": "2026-07-01T20:30:43.413152+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 537"
+    },
+    "coord_515": {
+      "solved_at": "2026-07-01T20:30:43.426076+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 515"
+    },
+    "coord_530": {
+      "solved_at": "2026-07-01T20:30:43.438885+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 530"
+    },
+    "coord_410": {
+      "solved_at": "2026-07-01T20:30:43.452495+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 410"
+    },
+    "coord_538": {
+      "solved_at": "2026-07-01T20:30:43.465511+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 538"
+    },
+    "coord_598": {
+      "solved_at": "2026-07-01T20:30:43.476815+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 598"
+    },
+    "coord_513": {
+      "solved_at": "2026-07-01T20:30:43.489870+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 513"
+    },
+    "coord_642": {
+      "solved_at": "2026-07-01T20:30:43.511277+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 642"
+    },
+    "coord_524": {
+      "solved_at": "2026-07-01T20:30:43.524236+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 524"
+    },
+    "coord_542": {
+      "solved_at": "2026-07-01T20:30:43.537285+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 542"
+    },
+    "coord_423": {
+      "solved_at": "2026-07-01T20:30:43.550925+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 423"
+    },
+    "coord_511": {
+      "solved_at": "2026-07-01T20:30:43.563846+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 511"
+    },
+    "coord_433": {
+      "solved_at": "2026-07-01T20:30:43.586138+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 433"
+    },
+    "coord_517": {
+      "solved_at": "2026-07-01T20:30:43.599273+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 517"
+    },
+    "coord_636": {
+      "solved_at": "2026-07-01T20:30:43.631101+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 636"
+    },
+    "coord_540": {
+      "solved_at": "2026-07-01T20:30:43.644294+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 540"
+    },
+    "coord_432": {
+      "solved_at": "2026-07-01T20:30:43.688442+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 432"
+    },
+    "coord_608": {
+      "solved_at": "2026-07-01T20:30:43.701676+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 608"
+    },
+    "coord_670": {
+      "solved_at": "2026-07-01T20:30:43.724313+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 670"
+    },
+    "coord_518": {
+      "solved_at": "2026-07-01T20:30:43.738820+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 518"
+    },
+    "coord_533": {
+      "solved_at": "2026-07-01T20:30:43.752102+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 533"
+    },
+    "coord_421": {
+      "solved_at": "2026-07-01T20:30:43.765868+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 421"
+    },
+    "coord_514": {
+      "solved_at": "2026-07-01T20:30:43.778951+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 514"
+    },
+    "coord_456": {
+      "solved_at": "2026-07-01T20:30:43.811446+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 456"
+    },
+    "coord_531": {
+      "solved_at": "2026-07-01T20:30:43.825063+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 531"
+    },
+    "coord_529": {
+      "solved_at": "2026-07-01T20:30:43.838777+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 529"
+    },
+    "coord_630": {
+      "solved_at": "2026-07-01T20:30:43.852143+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 630"
+    },
+    "coord_522": {
+      "solved_at": "2026-07-01T20:30:43.865350+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 522"
+    },
+    "coord_556": {
+      "solved_at": "2026-07-01T20:30:43.899304+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 556"
+    },
+    "coord_521": {
+      "solved_at": "2026-07-01T20:30:43.912524+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 521"
+    },
+    "coord_546": {
+      "solved_at": "2026-07-01T20:30:43.926769+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 546"
+    },
+    "coord_660": {
+      "solved_at": "2026-07-01T20:30:43.945360+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 660"
+    },
+    "coord_419": {
+      "solved_at": "2026-07-01T20:30:43.959201+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 419"
+    },
+    "coord_326": {
+      "solved_at": "2026-07-01T20:30:44.006355+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 326"
+    },
+    "coord_321": {
+      "solved_at": "2026-07-01T20:30:44.055773+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 321"
+    },
+    "coord_378": {
+      "solved_at": "2026-07-01T20:30:44.112014+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 378"
+    },
+    "coord_323": {
+      "solved_at": "2026-07-01T20:30:44.159544+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 323"
+    },
+    "coord_370": {
+      "solved_at": "2026-07-01T20:30:44.207721+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 370"
+    },
+    "coord_394": {
+      "solved_at": "2026-07-01T20:30:44.256410+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 394"
+    },
+    "coord_338": {
+      "solved_at": "2026-07-01T20:30:44.302508+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 338"
+    },
+    "coord_325": {
+      "solved_at": "2026-07-01T20:30:44.349278+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 325"
+    },
+    "coord_372": {
+      "solved_at": "2026-07-01T20:30:44.396171+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 372"
+    },
+    "coord_377": {
+      "solved_at": "2026-07-01T20:30:44.443671+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 377"
+    },
+    "coord_383": {
+      "solved_at": "2026-07-01T20:30:44.490743+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 383"
+    },
+    "coord_164": {
+      "solved_at": "2026-07-01T20:30:44.537908+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 164"
+    },
+    "coord_163": {
+      "solved_at": "2026-07-01T20:30:44.587072+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 163"
+    },
+    "coord_356": {
+      "solved_at": "2026-07-01T20:30:44.634933+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 356"
+    },
+    "coord_364": {
+      "solved_at": "2026-07-01T20:30:44.681745+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 364"
+    },
+    "coord_342": {
+      "solved_at": "2026-07-01T20:30:44.728957+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 342"
+    },
+    "coord_363": {
+      "solved_at": "2026-07-01T20:30:44.775980+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 363"
+    },
+    "coord_161": {
+      "solved_at": "2026-07-01T20:30:44.823882+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 161"
+    },
+    "coord_145": {
+      "solved_at": "2026-07-01T20:30:44.870736+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 145"
+    },
+    "coord_373": {
+      "solved_at": "2026-07-01T20:30:44.918185+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 373"
+    },
+    "coord_352": {
+      "solved_at": "2026-07-01T20:30:44.965402+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 352"
+    },
+    "coord_334": {
+      "solved_at": "2026-07-01T20:30:45.012599+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 334"
+    },
+    "coord_387": {
+      "solved_at": "2026-07-01T20:30:45.059979+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 387"
+    },
+    "coord_374": {
+      "solved_at": "2026-07-01T20:30:45.107515+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 374"
+    },
+    "coord_327": {
+      "solved_at": "2026-07-01T20:30:45.154870+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 327"
+    },
+    "coord_361": {
+      "solved_at": "2026-07-01T20:30:45.202066+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 361"
+    },
+    "coord_153": {
+      "solved_at": "2026-07-01T20:30:45.250490+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 153"
+    },
+    "coord_332": {
+      "solved_at": "2026-07-01T20:30:45.297938+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 332"
+    },
+    "coord_337": {
+      "solved_at": "2026-07-01T20:30:45.345173+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 337"
+    },
+    "coord_386": {
+      "solved_at": "2026-07-01T20:30:45.393143+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 386"
+    },
+    "coord_152": {
+      "solved_at": "2026-07-01T20:30:45.440556+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 152"
+    },
+    "coord_168": {
+      "solved_at": "2026-07-01T20:30:45.487815+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 168"
+    },
+    "coord_341": {
+      "solved_at": "2026-07-01T20:30:45.535253+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 341"
+    },
+    "coord_392": {
+      "solved_at": "2026-07-01T20:30:45.582436+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 392"
+    },
+    "coord_165": {
+      "solved_at": "2026-07-01T20:30:45.629379+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 165"
+    },
+    "coord_366": {
+      "solved_at": "2026-07-01T20:30:45.676541+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 366"
+    },
+    "coord_369": {
+      "solved_at": "2026-07-01T20:30:45.723583+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 369"
+    },
+    "coord_348": {
+      "solved_at": "2026-07-01T20:30:45.770298+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 348"
+    },
+    "coord_354": {
+      "solved_at": "2026-07-01T20:30:45.816866+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 354"
+    },
+    "coord_359": {
+      "solved_at": "2026-07-01T20:30:45.863784+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 359"
+    },
+    "coord_381": {
+      "solved_at": "2026-07-01T20:30:45.910160+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 381"
+    },
+    "coord_353": {
+      "solved_at": "2026-07-01T20:30:45.956778+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 353"
+    },
+    "coord_154": {
+      "solved_at": "2026-07-01T20:30:46.004031+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 154"
+    },
+    "coord_368": {
+      "solved_at": "2026-07-01T20:30:46.051402+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 368"
+    },
+    "coord_319": {
+      "solved_at": "2026-07-01T20:30:46.098446+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 319"
+    },
+    "coord_362": {
+      "solved_at": "2026-07-01T20:30:46.145504+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 362"
+    },
+    "coord_339": {
+      "solved_at": "2026-07-01T20:30:46.192642+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 339"
+    },
+    "coord_328": {
+      "solved_at": "2026-07-01T20:30:46.239772+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 328"
+    },
+    "coord_162": {
+      "solved_at": "2026-07-01T20:30:46.286965+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 162"
     }
   },
   "solve_runs": [
@@ -2022,7 +2522,14 @@
       "elapsed_s": 3.72,
       "cumulative_solved": 400,
       "dry_run": false
+    },
+    {
+      "timestamp": "2026-07-01T20:30:46.287223+00:00",
+      "nodes_solved": 100,
+      "elapsed_s": 3.23,
+      "cumulative_solved": 500,
+      "dry_run": false
     }
   ],
-  "total_solved": 400
+  "total_solved": 500
 }
