@@ -14,6 +14,7 @@ AGENTS_DIR    = BASE_DIR/"agents"
 MEMORY_DIR    = BASE_DIR/"memory"
 LOGS_DIR      = BASE_DIR/"logs"
 QUEUE_FILE    = TASKS_DIR/"queue.json"
+BACKLOG_FILE  = TASKS_DIR/"backlog.json"
 CANON_FILE    = MEMORY_DIR/"canon.json"
 SESSION_LOG   = MEMORY_DIR/"session_log.md"
 ERROR_LOG     = LOGS_DIR/"errors.log"
@@ -310,6 +311,24 @@ def read_queue(gh=None):
         except Exception as e: log.warning(f"GitHub queue: {e}")
     return sorted(tasks, key=lambda t:(t.get("priority",3),t.get("created_at","")))
 
+# ── Backlog fallback tier (Phase 13) ─────────────────────────────────────────────
+# CLAUDE.md's own SESSION STARTUP SEQUENCE documents three fallback tiers when
+# the queue is empty: (8) run BACKGROUND tasks from tasks/backlog.json, (9) only
+# then fall back to self-generated creative tasks. The main loop only ever did
+# step 9 — it went straight from "queue empty" to gen_auto()'s hardcoded
+# AUTONOMOUS list, skipping the documented middle tier entirely.
+
+def read_backlog():
+    if not BACKLOG_FILE.exists():
+        return []
+    try:
+        tasks = json.loads(BACKLOG_FILE.read_text())
+    except Exception:
+        return []
+    done = completed_task_ids()  # same idempotency guard as GitHub-sourced tasks (Phase 7)
+    pending = [t for t in tasks if t.get("status","pending")=="pending" and t.get("task_id") not in done]
+    return sorted(pending, key=lambda t:(t.get("priority",4),t.get("created_at","")))
+
 def write_queue(tasks):
     local = [t for t in tasks if not t.get("task_id","").startswith("gh-")]
     TASKS_DIR.mkdir(exist_ok=True)
@@ -512,9 +531,14 @@ def main():
             canon = load_canon()
             tasks = read_queue(gh)
             if not tasks:
-                auto = gen_auto()
-                cur  = json.loads(QUEUE_FILE.read_text()) if QUEUE_FILE.exists() else []
-                cur.append(auto); write_queue(cur); tasks=[auto]
+                backlog_tasks = read_backlog()
+                if backlog_tasks:
+                    log.info("Queue empty — picked BACKGROUND task from tasks/backlog.json")
+                    tasks = [backlog_tasks[0]]
+                else:
+                    auto = gen_auto()
+                    cur  = json.loads(QUEUE_FILE.read_text()) if QUEUE_FILE.exists() else []
+                    cur.append(auto); write_queue(cur); tasks=[auto]
             task = tasks[0]
             log.info(f"-> [{task['agent']}] {task['instruction'][:80]}...")
             mark_running(task["task_id"])
