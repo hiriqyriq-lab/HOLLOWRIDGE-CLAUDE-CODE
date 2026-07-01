@@ -2499,6 +2499,506 @@
       "solved_at": "2026-07-01T20:30:46.286965+00:00",
       "type": "coordinate",
       "label": "Coordinate 162"
+    },
+    "coord_155": {
+      "solved_at": "2026-07-01T23:54:42.725847+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 155"
+    },
+    "coord_351": {
+      "solved_at": "2026-07-01T23:54:42.771409+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 351"
+    },
+    "coord_349": {
+      "solved_at": "2026-07-01T23:54:42.817340+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 349"
+    },
+    "coord_382": {
+      "solved_at": "2026-07-01T23:54:42.862438+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 382"
+    },
+    "coord_389": {
+      "solved_at": "2026-07-01T23:54:42.907675+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 389"
+    },
+    "coord_412": {
+      "solved_at": "2026-07-01T23:54:42.942580+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 412"
+    },
+    "coord_768": {
+      "solved_at": "2026-07-01T23:54:42.976450+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 768"
+    },
+    "coord_030": {
+      "solved_at": "2026-07-01T23:54:43.013637+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 030"
+    },
+    "coord_058": {
+      "solved_at": "2026-07-01T23:54:43.051294+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 058"
+    },
+    "coord_060": {
+      "solved_at": "2026-07-01T23:54:43.088109+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 060"
+    },
+    "coord_059": {
+      "solved_at": "2026-07-01T23:54:43.125016+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 059"
+    },
+    "coord_054": {
+      "solved_at": "2026-07-01T23:54:43.161917+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 054"
+    },
+    "coord_045": {
+      "solved_at": "2026-07-01T23:54:43.199050+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 045"
+    },
+    "coord_035": {
+      "solved_at": "2026-07-01T23:54:43.236123+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 035"
+    },
+    "coord_022": {
+      "solved_at": "2026-07-01T23:54:43.272682+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 022"
+    },
+    "coord_055": {
+      "solved_at": "2026-07-01T23:54:43.310102+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 055"
+    },
+    "coord_073": {
+      "solved_at": "2026-07-01T23:54:43.339014+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 073"
+    },
+    "coord_071": {
+      "solved_at": "2026-07-01T23:54:43.368749+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 071"
+    },
+    "coord_076": {
+      "solved_at": "2026-07-01T23:54:43.397951+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 076"
+    },
+    "coord_077": {
+      "solved_at": "2026-07-01T23:54:43.427365+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 077"
+    },
+    "coord_081": {
+      "solved_at": "2026-07-01T23:54:43.456637+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 081"
+    },
+    "coord_981": {
+      "solved_at": "2026-07-01T23:54:43.467325+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 981"
+    },
+    "coord_405": {
+      "solved_at": "2026-07-01T23:54:43.478124+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 405"
+    },
+    "coord_771": {
+      "solved_at": "2026-07-01T23:54:43.514579+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 771"
+    },
+    "file::13-Ring Totem Pole Expansion.docx": {
+      "solved_at": "2026-07-01T23:54:43.516713+00:00",
+      "type": "file",
+      "label": "13-Ring Totem Pole Expansion.docx"
+    },
+    "coord_447": {
+      "solved_at": "2026-07-01T23:54:43.527665+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 447"
+    },
+    "coord_467": {
+      "solved_at": "2026-07-01T23:54:43.538615+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 467"
+    },
+    "coord_427": {
+      "solved_at": "2026-07-01T23:54:43.549560+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 427"
+    },
+    "file::20个密度艺术峰 (1).docx": {
+      "solved_at": "2026-07-01T23:54:43.560340+00:00",
+      "type": "file",
+      "label": "20个密度艺术峰 (1).docx"
+    },
+    "file::251坐标索引.docx": {
+      "solved_at": "2026-07-01T23:54:43.560721+00:00",
+      "type": "file",
+      "label": "251坐标索引.docx"
+    },
+    "coord_909": {
+      "solved_at": "2026-07-01T23:54:43.566938+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 909"
+    },
+    "file::90年代杂志续篇.docx": {
+      "solved_at": "2026-07-01T23:54:43.573418+00:00",
+      "type": "file",
+      "label": "90年代杂志续篇.docx"
+    },
+    "coord_495": {
+      "solved_at": "2026-07-01T23:54:43.575445+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 495"
+    },
+    "file::Animal Spirit Coyote & Fox.docx": {
+      "solved_at": "2026-07-01T23:54:43.577511+00:00",
+      "type": "file",
+      "label": "Animal Spirit Coyote & Fox.docx"
+    },
+    "file::Automated Reddit Reels Pipeline.docx": {
+      "solved_at": "2026-07-01T23:54:43.577944+00:00",
+      "type": "file",
+      "label": "Automated Reddit Reels Pipeline.docx"
+    },
+    "coord_463": {
+      "solved_at": "2026-07-01T23:54:43.584300+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 463"
+    },
+    "file::Bacteriaophages Activation.docx": {
+      "solved_at": "2026-07-01T23:54:43.590619+00:00",
+      "type": "file",
+      "label": "Bacteriaophages Activation.docx"
+    },
+    "coord_890": {
+      "solved_at": "2026-07-01T23:54:43.607041+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 890"
+    },
+    "coord_488": {
+      "solved_at": "2026-07-01T23:54:43.624078+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 488"
+    },
+    "coord_965": {
+      "solved_at": "2026-07-01T23:54:43.641102+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 965"
+    },
+    "coord_874": {
+      "solved_at": "2026-07-01T23:54:43.658165+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 874"
+    },
+    "coord_880": {
+      "solved_at": "2026-07-01T23:54:43.675166+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 880"
+    },
+    "coord_721": {
+      "solved_at": "2026-07-01T23:54:43.691900+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 721"
+    },
+    "coord_947": {
+      "solved_at": "2026-07-01T23:54:43.708514+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 947"
+    },
+    "coord_847": {
+      "solved_at": "2026-07-01T23:54:43.725502+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 847"
+    },
+    "coord_733": {
+      "solved_at": "2026-07-01T23:54:43.742455+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 733"
+    },
+    "coord_428": {
+      "solved_at": "2026-07-01T23:54:43.759507+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 428"
+    },
+    "file::Celebrity Affidavit & NIL Deals.docx": {
+      "solved_at": "2026-07-01T23:54:43.775712+00:00",
+      "type": "file",
+      "label": "Celebrity Affidavit & NIL Deals.docx"
+    },
+    "coord_919": {
+      "solved_at": "2026-07-01T23:54:43.799288+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 919"
+    },
+    "file::Celestial North Node 2040.docx": {
+      "solved_at": "2026-07-01T23:54:43.822221+00:00",
+      "type": "file",
+      "label": "Celestial North Node 2040.docx"
+    },
+    "coord_789": {
+      "solved_at": "2026-07-01T23:54:43.837424+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 789"
+    },
+    "coord_484": {
+      "solved_at": "2026-07-01T23:54:43.852615+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 484"
+    },
+    "file::Comprehensive Top-Down Worldbuilding Framework.docx": {
+      "solved_at": "2026-07-01T23:54:43.867837+00:00",
+      "type": "file",
+      "label": "Comprehensive Top-Down Worldbuilding Framework.docx"
+    },
+    "file::Continuing Star Chart Integration.docx": {
+      "solved_at": "2026-07-01T23:54:43.868121+00:00",
+      "type": "file",
+      "label": "Continuing Star Chart Integration.docx"
+    },
+    "coord_987": {
+      "solved_at": "2026-07-01T23:54:43.890794+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 987"
+    },
+    "coord_957": {
+      "solved_at": "2026-07-01T23:54:43.913440+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 957"
+    },
+    "file::Contrapolation to 11D (1).docx": {
+      "solved_at": "2026-07-01T23:54:43.936471+00:00",
+      "type": "file",
+      "label": "Contrapolation to 11D (1).docx"
+    },
+    "file::Countinsouls 40K Lore Merge.docx": {
+      "solved_at": "2026-07-01T23:54:43.936774+00:00",
+      "type": "file",
+      "label": "Countinsouls 40K Lore Merge.docx"
+    },
+    "file::Countinsouls Gen Z Films.docx": {
+      "solved_at": "2026-07-01T23:54:43.937095+00:00",
+      "type": "file",
+      "label": "Countinsouls Gen Z Films.docx"
+    },
+    "file::Countinsouls Movie Picks.docx": {
+      "solved_at": "2026-07-01T23:54:43.940437+00:00",
+      "type": "file",
+      "label": "Countinsouls Movie Picks.docx"
+    },
+    "file::EXE Acronym Lexicon.docx": {
+      "solved_at": "2026-07-01T23:54:43.941949+00:00",
+      "type": "file",
+      "label": "EXE Acronym Lexicon.docx"
+    },
+    "file::Eschatology Star Calendar.docx": {
+      "solved_at": "2026-07-01T23:54:43.961090+00:00",
+      "type": "file",
+      "label": "Eschatology Star Calendar.docx"
+    },
+    "coord_499": {
+      "solved_at": "2026-07-01T23:54:43.964033+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 499"
+    },
+    "file::Free AI Automation Framework.docx": {
+      "solved_at": "2026-07-01T23:54:43.966968+00:00",
+      "type": "file",
+      "label": "Free AI Automation Framework.docx"
+    },
+    "file::Free Stack Architecture Update.docx": {
+      "solved_at": "2026-07-01T23:54:43.967280+00:00",
+      "type": "file",
+      "label": "Free Stack Architecture Update.docx"
+    },
+    "coord_442": {
+      "solved_at": "2026-07-01T23:54:43.977375+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 442"
+    },
+    "coord_605": {
+      "solved_at": "2026-07-01T23:54:43.987535+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 605"
+    },
+    "coord_612": {
+      "solved_at": "2026-07-01T23:54:43.997699+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 612"
+    },
+    "coord_680": {
+      "solved_at": "2026-07-01T23:54:44.007873+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 680"
+    },
+    "coord_674": {
+      "solved_at": "2026-07-01T23:54:44.018016+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 674"
+    },
+    "coord_643": {
+      "solved_at": "2026-07-01T23:54:44.028115+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 643"
+    },
+    "coord_489": {
+      "solved_at": "2026-07-01T23:54:44.038206+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 489"
+    },
+    "coord_590": {
+      "solved_at": "2026-07-01T23:54:44.048397+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 590"
+    },
+    "coord_650": {
+      "solved_at": "2026-07-01T23:54:44.058735+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 650"
+    },
+    "coord_572": {
+      "solved_at": "2026-07-01T23:54:44.068862+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 572"
+    },
+    "coord_482": {
+      "solved_at": "2026-07-01T23:54:44.078959+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 482"
+    },
+    "coord_603": {
+      "solved_at": "2026-07-01T23:54:44.089126+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 603"
+    },
+    "coord_607": {
+      "solved_at": "2026-07-01T23:54:44.099265+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 607"
+    },
+    "coord_502": {
+      "solved_at": "2026-07-01T23:54:44.109368+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 502"
+    },
+    "coord_594": {
+      "solved_at": "2026-07-01T23:54:44.119454+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 594"
+    },
+    "coord_654": {
+      "solved_at": "2026-07-01T23:54:44.129566+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 654"
+    },
+    "coord_634": {
+      "solved_at": "2026-07-01T23:54:44.139697+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 634"
+    },
+    "coord_667": {
+      "solved_at": "2026-07-01T23:54:44.149742+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 667"
+    },
+    "coord_644": {
+      "solved_at": "2026-07-01T23:54:44.159810+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 644"
+    },
+    "coord_599": {
+      "solved_at": "2026-07-01T23:54:44.169887+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 599"
+    },
+    "coord_547": {
+      "solved_at": "2026-07-01T23:54:44.180057+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 547"
+    },
+    "coord_627": {
+      "solved_at": "2026-07-01T23:54:44.190135+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 627"
+    },
+    "coord_565": {
+      "solved_at": "2026-07-01T23:54:44.200206+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 565"
+    },
+    "coord_583": {
+      "solved_at": "2026-07-01T23:54:44.210427+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 583"
+    },
+    "coord_457": {
+      "solved_at": "2026-07-01T23:54:44.220575+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 457"
+    },
+    "coord_558": {
+      "solved_at": "2026-07-01T23:54:44.230658+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 558"
+    },
+    "coord_683": {
+      "solved_at": "2026-07-01T23:54:44.240727+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 683"
+    },
+    "coord_552": {
+      "solved_at": "2026-07-01T23:54:44.250787+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 552"
+    },
+    "coord_563": {
+      "solved_at": "2026-07-01T23:54:44.261002+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 563"
+    },
+    "coord_669": {
+      "solved_at": "2026-07-01T23:54:44.273183+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 669"
+    },
+    "coord_655": {
+      "solved_at": "2026-07-01T23:54:44.283430+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 655"
+    },
+    "coord_663": {
+      "solved_at": "2026-07-01T23:54:44.293531+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 663"
+    },
+    "coord_659": {
+      "solved_at": "2026-07-01T23:54:44.303671+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 659"
+    },
+    "coord_584": {
+      "solved_at": "2026-07-01T23:54:44.313764+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 584"
+    },
+    "coord_471": {
+      "solved_at": "2026-07-01T23:54:44.323843+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 471"
     }
   },
   "solve_runs": [
@@ -2529,7 +3029,14 @@
       "elapsed_s": 3.23,
       "cumulative_solved": 500,
       "dry_run": false
+    },
+    {
+      "timestamp": "2026-07-01T23:54:44.323947+00:00",
+      "nodes_solved": 100,
+      "elapsed_s": 1.64,
+      "cumulative_solved": 600,
+      "dry_run": false
     }
   ],
-  "total_solved": 500
+  "total_solved": 600
 }
