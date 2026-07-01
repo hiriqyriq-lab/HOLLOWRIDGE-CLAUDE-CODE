@@ -1,0 +1,50 @@
+name: Autosolve Lattice (perpetual)
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours — runs forever, picks up unsolved nodes each pass
+  workflow_dispatch:          # also triggerable manually at any time
+
+jobs:
+  autosolve:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write          # needed to commit solved contrapolation docs back to main
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install python-docx
+
+      - name: Rebuild lattice (picks up any new transcripts)
+        run: |
+          python3 scripts/extract_transcripts.py
+          python3 scripts/cross_reference_workflows.py
+          python3 scripts/peaks_synthesis.py
+          python3 scripts/build_lattice.py
+
+      - name: Autosolve unsolved lattice nodes
+        env:
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+        run: python3 scripts/autosolve_lattice.py
+
+      - name: Commit solved contrapolations back to repo
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/contrapolations/ data/lattice_state.json data/SOLVE_LOG.md \
+                  data/lattice_graph.json data/LATTICE.md data/transcripts.json \
+                  data/combined_workflows.json data/combined_peaks.json \
+                  data/COMBINED_PEAKS.md data/COMBINED_WORKFLOWS.md data/MEMORY.md \
+                  data/transcripts.csv || true
+          git diff --cached --quiet || \
+            git commit -m "chore: autosolve lattice — $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          git push origin main
