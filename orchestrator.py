@@ -19,6 +19,7 @@ SESSION_LOG   = MEMORY_DIR/"session_log.md"
 ERROR_LOG     = LOGS_DIR/"errors.log"
 ACTIVITY_LOG  = LOGS_DIR/"activity.log"
 LOCK_FILE     = TASKS_DIR/".lock.json"
+SPEND_FILE    = MEMORY_DIR/"spend.json"
 
 MODEL         = os.getenv("NIL_AGENCY_MODEL","claude-sonnet-4-6")
 MAX_TOKENS    = int(os.getenv("NIL_AGENCY_MAX_TOKENS","8096"))
@@ -28,6 +29,10 @@ LOCK_TTL      = int(os.getenv("NIL_AGENCY_LOCK_TTL","900"))   # 15 min: local pm
                                                                 # can otherwise both claim the same
                                                                 # task — see PHASE_3_SYNTHESIS.md
 GIT_SYNC      = os.getenv("NIL_AGENCY_GIT_SYNC","0") == "1"
+MAX_DAILY_SPEND_USD = float(os.getenv("NIL_AGENCY_MAX_DAILY_SPEND_USD","15.0"))
+# Approximate $/million tokens. Not exact billing — a conservative circuit
+# breaker, not an invoice. See PHASE_5_SYNTHESIS.md.
+PRICE_PER_MTOK = {"default": {"input": 3.0, "output": 15.0}}
 
 LOGS_DIR.mkdir(exist_ok=True)
 logging.basicConfig(level=logging.INFO,
@@ -129,6 +134,55 @@ def update_canon(canon, task, summary, output_path):
     })
     return canon
 
+# ── Budget circuit breaker (Phase 5) ─────────────────────────────────────────────
+# Nothing in Phase 1-4 caps spend: the loop calls the Anthropic API every cycle,
+# forever, with no ceiling. A stuck retry, a runaway autonomous-task cycle, or
+# just running unattended for weeks turns into an unbounded bill. This adds a
+# daily cap, checked *before* each API call, tracked in memory/spend.json so it
+# holds across both local and cloud runs (same file, git-synced like canon).
+
+def load_spend():
+    if SPEND_FILE.exists():
+        try: return json.loads(SPEND_FILE.read_text())
+        except Exception: pass
+    return {"date": None, "tokens_today": 0, "cost_today_usd": 0.0,
+            "total_tokens": 0, "total_cost_usd": 0.0, "runs": []}
+
+def estimate_cost_usd(model, input_tokens, output_tokens):
+    rates = PRICE_PER_MTOK.get(model, PRICE_PER_MTOK["default"])
+    return (input_tokens/1_000_000)*rates["input"] + (output_tokens/1_000_000)*rates["output"]
+
+def _today():
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+def over_budget(spend):
+    if spend.get("date") != _today():
+        return False  # new day, not yet spent anything
+    return spend.get("cost_today_usd", 0.0) >= MAX_DAILY_SPEND_USD
+
+def record_spend(spend, model, input_tokens, output_tokens):
+    today = _today()
+    if spend.get("date") != today:
+        spend["date"] = today
+        spend["tokens_today"] = 0
+        spend["cost_today_usd"] = 0.0
+    cost = estimate_cost_usd(model, input_tokens, output_tokens)
+    spend["tokens_today"] += input_tokens + output_tokens
+    spend["cost_today_usd"] += cost
+    spend["total_tokens"] = spend.get("total_tokens", 0) + input_tokens + output_tokens
+    spend["total_cost_usd"] = spend.get("total_cost_usd", 0.0) + cost
+    spend.setdefault("runs", []).append({
+        "at": datetime.now(timezone.utc).isoformat(),
+        "input_tokens": input_tokens, "output_tokens": output_tokens,
+        "cost_usd": round(cost, 6),
+    })
+    spend["runs"] = spend["runs"][-200:]  # bounded history
+    return spend
+
+def save_spend(spend):
+    MEMORY_DIR.mkdir(exist_ok=True)
+    SPEND_FILE.write_text(json.dumps(spend, indent=2))
+
 def append_session_log(agent, task_id, summary):
     MEMORY_DIR.mkdir(exist_ok=True)
     ts = datetime.now(timezone.utc).isoformat()
@@ -218,7 +272,7 @@ def run_agent(client, task, canon):
         "completed_at":datetime.now(timezone.utc).isoformat()},indent=2))
     summary = text[:150].replace("\n"," ").strip()+"..."
     log.info(f"  {agent} -> {odir.name} ({resp.usage.output_tokens} tok)")
-    return str(odir), summary, text
+    return str(odir), summary, text, resp.usage.input_tokens, resp.usage.output_tokens
 
 AUTONOMOUS = [
     {"agent":"WORLDBUILDING_AGENT","priority":5,"instruction":"Expand lore for one of the five Immortal Bloodline Houses (Aurveil, Morrval, Sylvorne, Vaelthorn, Veilwynn). Choose least developed. 600-word origin myth, cosmological domain, PIE root *kwel-* relationship, active conflict with another House. Hegelian dialectic throughout."},
@@ -274,6 +328,14 @@ def main():
         if not acquire_lock(args.mode):
             time.sleep(min(POLL_INTERVAL, 30) if args.mode=="local" else 5)
             continue
+        spend = load_spend()
+        if over_budget(spend):
+            log.warning(f"Daily spend cap (${MAX_DAILY_SPEND_USD:.2f}) reached "
+                        f"(${spend['cost_today_usd']:.2f} spent) — skipping cycle")
+            release_lock()
+            if args.cycles and cycle>=args.cycles: break
+            time.sleep(POLL_INTERVAL if args.mode=="local" else 5)
+            continue
         try:
             canon = load_canon()
             tasks = read_queue(gh)
@@ -284,7 +346,8 @@ def main():
             task = tasks[0]
             log.info(f"-> [{task['agent']}] {task['instruction'][:80]}...")
             mark_running(task["task_id"])
-            opath, summary, text = run_agent(client, task, canon)
+            opath, summary, text, in_tok, out_tok = run_agent(client, task, canon)
+            save_spend(record_spend(spend, MODEL, in_tok, out_tok))
             complete_task(task, opath, summary, gh)
             append_session_log(task["agent"], task["task_id"], summary)
             save_canon(update_canon(canon, task, summary, opath))
