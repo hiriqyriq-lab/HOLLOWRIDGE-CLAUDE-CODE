@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "last_updated": "",
+  "worldbuilding": {
+    "houses": {},
+    "chromosomes": {},
+    "confirmed_lore": []
+  },
+  "brand": {
+    "notarikon_dissections": {},
+    "confirmed_copy": []
+  },
+  "research": {
+    "completed_syntheses": [],
+    "open_dialectics": []
+  },
+  "content": {
+    "published_topics": [],
+    "avoid_repetition": []
+  }
+}

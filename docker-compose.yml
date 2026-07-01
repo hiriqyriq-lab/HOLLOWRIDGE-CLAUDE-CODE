@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  nil-agency:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./outputs:/nil-agency/outputs
+      - ./memory:/nil-agency/memory
+      - ./tasks:/nil-agency/tasks
+      - ./logs:/nil-agency/logs
