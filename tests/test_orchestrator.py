@@ -24,6 +24,7 @@ def isolated_dirs(tmp_path, monkeypatch):
     monkeypatch.setattr(orch, "SESSION_LOG", tmp_path / "memory" / "session_log.md")
     monkeypatch.setattr(orch, "LOCK_FILE", tmp_path / "tasks" / ".lock.json")
     monkeypatch.setattr(orch, "SPEND_FILE", tmp_path / "memory" / "spend.json")
+    monkeypatch.setattr(orch, "HEARTBEAT_FILE", tmp_path / "memory" / "heartbeat.json")
     yield
 
 
@@ -220,3 +221,33 @@ class TestRateLimitBackoff:
     def test_jitter_makes_repeated_calls_vary(self):
         values = {orch.backoff_seconds(2) for _ in range(20)}
         assert len(values) > 1  # near-certain with random jitter over 20 draws
+
+
+class TestHeartbeat:
+    def test_no_heartbeat_yet_is_not_flagged_stale(self, capsys):
+        assert orch.check_heartbeat() is True
+        assert "No heartbeat recorded" in capsys.readouterr().out
+
+    def test_fresh_heartbeat_is_ok(self, capsys):
+        orch.write_heartbeat("local", 5)
+        assert orch.check_heartbeat() is True
+        assert "[OK]" in capsys.readouterr().out
+
+    def test_stale_heartbeat_is_flagged(self, monkeypatch, capsys):
+        import datetime as dt
+        old = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(seconds=orch.HEARTBEAT_STALE_SECONDS + 100)).isoformat()
+        orch.MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+        orch.HEARTBEAT_FILE.write_text(json.dumps({"last_cycle_at": old, "mode": "local", "cycle": 3}))
+        assert orch.check_heartbeat() is False
+        assert "[STALE]" in capsys.readouterr().out
+
+    def test_corrupt_heartbeat_is_flagged(self):
+        orch.MEMORY_DIR.mkdir(parents=True, exist_ok=True)
+        orch.HEARTBEAT_FILE.write_text("not json")
+        assert orch.check_heartbeat() is False
+
+    def test_write_heartbeat_round_trip(self):
+        orch.write_heartbeat("github-actions", 7)
+        hb = json.loads(orch.HEARTBEAT_FILE.read_text())
+        assert hb["mode"] == "github-actions"
+        assert hb["cycle"] == 7

@@ -32,3 +32,8 @@ jobs:
           git add outputs/ memory/ tasks/completed/ 2>/dev/null || true
           git diff --staged --quiet || git commit -m "NIL AGENCY $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push || true
+      # Phase 11: the main loop swallows exceptions internally, so this job
+      # "succeeding" doesn't mean a cycle actually completed. Fail the run
+      # loudly (red X in Actions) if memory/heartbeat.json is stale or missing.
+      - name: Check heartbeat freshness
+        run: python3 orchestrator.py --check-heartbeat

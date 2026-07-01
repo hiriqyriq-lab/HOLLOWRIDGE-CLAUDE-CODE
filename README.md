@@ -100,3 +100,16 @@ Rate-limit retries now back off exponentially with jitter
 (`NIL_AGENCY_RATE_LIMIT_BASE_SLEEP`/`_MAX_SLEEP`, defaults 30s/600s) instead
 of a flat 60s sleep, so local and cloud runs sharing one API key don't retry
 in lockstep. See `PHASE_10_SYNTHESIS.md`.
+
+## Heartbeat (Phase 11)
+
+`memory/heartbeat.json` is written every cycle. Check staleness (a
+perpetual system otherwise has no way to notice it stopped):
+
+```bash
+python3 orchestrator.py --check-heartbeat
+```
+
+The GitHub Actions workflow now fails loudly (red X) if the last cycle is
+older than `NIL_AGENCY_HEARTBEAT_STALE_SECONDS` (default 2h). See
+`PHASE_11_SYNTHESIS.md`.

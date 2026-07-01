@@ -20,6 +20,7 @@ ERROR_LOG     = LOGS_DIR/"errors.log"
 ACTIVITY_LOG  = LOGS_DIR/"activity.log"
 LOCK_FILE     = TASKS_DIR/".lock.json"
 SPEND_FILE    = MEMORY_DIR/"spend.json"
+HEARTBEAT_FILE = MEMORY_DIR/"heartbeat.json"
 
 MODEL         = os.getenv("NIL_AGENCY_MODEL","claude-sonnet-4-6")
 MAX_TOKENS    = int(os.getenv("NIL_AGENCY_MAX_TOKENS","8096"))
@@ -32,6 +33,7 @@ GIT_SYNC      = os.getenv("NIL_AGENCY_GIT_SYNC","0") == "1"
 MAX_DAILY_SPEND_USD = float(os.getenv("NIL_AGENCY_MAX_DAILY_SPEND_USD","15.0"))
 RATE_LIMIT_BASE_SLEEP = float(os.getenv("NIL_AGENCY_RATE_LIMIT_BASE_SLEEP","30"))
 RATE_LIMIT_MAX_SLEEP  = float(os.getenv("NIL_AGENCY_RATE_LIMIT_MAX_SLEEP","600"))
+HEARTBEAT_STALE_SECONDS = int(os.getenv("NIL_AGENCY_HEARTBEAT_STALE_SECONDS","7200"))
 # Approximate $/million tokens. Not exact billing — a conservative circuit
 # breaker, not an invoice. See PHASE_5_SYNTHESIS.md.
 PRICE_PER_MTOK = {"default": {"input": 3.0, "output": 15.0}}
@@ -77,6 +79,36 @@ def release_lock():
     if LOCK_FILE.exists():
         try: LOCK_FILE.unlink()
         except Exception: pass
+
+# ── Heartbeat + staleness (Phase 11) ─────────────────────────────────────────────
+# A system explicitly designed to run forever ("there is no idle state") has no
+# way to notice if it stops. An expired API key, a persistent budget-cap trip
+# with nobody watching, or a crash before the loop even starts would go
+# unnoticed indefinitely — hourly Actions runs completing "successfully" (the
+# main loop swallows all exceptions internally) tells you nothing about whether
+# work actually happened.
+
+def write_heartbeat(mode: str, cycle: int):
+    MEMORY_DIR.mkdir(exist_ok=True)
+    HEARTBEAT_FILE.write_text(json.dumps({
+        "last_cycle_at": datetime.now(timezone.utc).isoformat(),
+        "mode": mode, "holder": holder_id(mode), "cycle": cycle,
+    }, indent=2))
+
+def check_heartbeat() -> bool:
+    if not HEARTBEAT_FILE.exists():
+        print("[INFO] No heartbeat recorded yet — orchestrator has never completed a cycle")
+        return True
+    try:
+        hb = json.loads(HEARTBEAT_FILE.read_text())
+        age = time.time() - datetime.fromisoformat(hb["last_cycle_at"]).timestamp()
+    except Exception as e:
+        print(f"[WARN] heartbeat.json unreadable: {e}")
+        return False
+    stale = age > HEARTBEAT_STALE_SECONDS
+    print(f"[{'STALE' if stale else 'OK'}] last cycle {age:.0f}s ago "
+          f"(mode={hb.get('mode')}, cycle={hb.get('cycle')}), threshold {HEARTBEAT_STALE_SECONDS}s")
+    return not stale
 
 # ── Git sync (Phase 3) ──────────────────────────────────────────────────────────
 # Phase 2's GitHub Actions workflow commits outputs/memory/tasks back to the repo
@@ -377,12 +409,16 @@ def main():
     parser.add_argument("--mode",default="local",choices=["local","github-actions"])
     parser.add_argument("--git-sync",action="store_true",help="commit+push outputs/memory after each task (local mode)")
     parser.add_argument("--check",action="store_true",help="validate config and exit — no API calls")
+    parser.add_argument("--check-heartbeat",action="store_true",help="report last-cycle staleness and exit")
     args = parser.parse_args()
     global GIT_SYNC
     GIT_SYNC = GIT_SYNC or args.git_sync
 
     if args.check:
         raise SystemExit(0 if run_config_check() else 1)
+
+    if args.check_heartbeat:
+        raise SystemExit(0 if check_heartbeat() else 1)
 
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
@@ -454,6 +490,7 @@ def main():
         except Exception as e:
             log_error("loop",e); time.sleep(10)
         finally:
+            write_heartbeat(args.mode, cycle)
             release_lock()
         if not (args.cycles and cycle>=args.cycles):
             if args.mode=="local": time.sleep(POLL_INTERVAL)
