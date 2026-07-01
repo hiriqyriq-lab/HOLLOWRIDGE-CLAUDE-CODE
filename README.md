@@ -64,3 +64,10 @@ your actual Anthropic billing for real numbers. See `PHASE_5_SYNTHESIS.md`.
 Metricool distribution now saves posts as drafts by default — nothing goes
 live automatically. Set `NIL_AGENCY_AUTO_PUBLISH=1` to actually publish. See
 `PHASE_6_SYNTHESIS.md`.
+
+## GitHub Issue Task Idempotency (Phase 7)
+
+If closing a GitHub issue fails after a task completes, it no longer gets
+reprocessed on the next cycle — local completion records in
+`tasks/completed/` are now the source of truth, independent of the GitHub
+API call succeeding. See `PHASE_7_SYNTHESIS.md`.
