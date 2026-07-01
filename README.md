@@ -82,3 +82,14 @@ python3 -m pytest tests/ -v
 28 tests covering the lock, canon write-back, budget circuit breaker, and
 GitHub Issue idempotency mechanisms. Runs automatically on every PR via
 `.github/workflows/tests.yml`. See `PHASE_8_SYNTHESIS.md`.
+
+## Config Check (Phase 9)
+
+`.env.example` finally exists (README referenced it since Phase 2 without
+it actually being there). Validate config without spending anything:
+
+```bash
+python3 orchestrator.py --check
+```
+
+See `PHASE_9_SYNTHESIS.md`.

@@ -302,14 +302,74 @@ def gen_auto():
             "context_files":[],"created_at":datetime.now(timezone.utc).isoformat(),
             "deadline":None,"source":"autonomous"}
 
+# ── Config validation (Phase 9) ─────────────────────────────────────────────────
+# README said `cp .env.example .env` since Phase 2; that file never existed.
+# Nothing validated required config before hitting a paid API call either —
+# the first sign of a missing agent prompt or bad credentials was a crash (or
+# silent "optional feature not configured") mid-run. --check reports the same
+# picture without spending anything.
+
+def run_config_check() -> bool:
+    ok = True
+    print("NIL AGENCY — config check")
+    print("=" * 40)
+
+    if os.getenv("ANTHROPIC_API_KEY"):
+        print("[OK]   ANTHROPIC_API_KEY set")
+    else:
+        print("[FAIL] ANTHROPIC_API_KEY not set — required to run")
+        ok = False
+
+    if (BASE_DIR/"CLAUDE.md").exists():
+        print("[OK]   CLAUDE.md present (fallback system prompt)")
+    else:
+        print("[WARN] CLAUDE.md missing — agents without a matching agents/*.md will crash")
+
+    missing = [a for a in CANON_SECTION if not (AGENTS_DIR/f"{a.lower()}.md").exists()]
+    if missing:
+        print(f"[WARN] agents/ missing prompt for: {', '.join(missing)} (falls back to CLAUDE.md)")
+    else:
+        print("[OK]   agents/ has a prompt file for every known agent")
+
+    try:
+        from github_queue import GitHubQueue
+        gh = GitHubQueue()
+        state = "active" if gh.available() else "not configured (optional)"
+        print(f"[INFO] GitHub Issues queue: {state}")
+    except ImportError:
+        print("[WARN] github_queue.py not importable")
+
+    try:
+        from distributors.metricool import MetricoolDistributor, AUTO_PUBLISH
+        d = MetricoolDistributor()
+        if d.available():
+            mode = "AUTO_PUBLISH on — will publish live" if AUTO_PUBLISH else "drafts only (NIL_AGENCY_AUTO_PUBLISH not set)"
+            print(f"[INFO] Metricool distribution: active, {mode}")
+        else:
+            print("[INFO] Metricool distribution: not configured (optional)")
+    except ImportError:
+        print("[WARN] distributors/metricool.py not importable")
+
+    spend = load_spend()
+    print(f"[INFO] Spend today: ${spend.get('cost_today_usd',0.0):.4f} / "
+          f"${MAX_DAILY_SPEND_USD:.2f} daily cap")
+
+    print("=" * 40)
+    print("CONFIG OK — ready to run" if ok else "CONFIG INCOMPLETE — see [FAIL] above")
+    return ok
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--cycles",type=int,default=0)
     parser.add_argument("--mode",default="local",choices=["local","github-actions"])
     parser.add_argument("--git-sync",action="store_true",help="commit+push outputs/memory after each task (local mode)")
+    parser.add_argument("--check",action="store_true",help="validate config and exit — no API calls")
     args = parser.parse_args()
     global GIT_SYNC
     GIT_SYNC = GIT_SYNC or args.git_sync
+
+    if args.check:
+        raise SystemExit(0 if run_config_check() else 1)
 
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
