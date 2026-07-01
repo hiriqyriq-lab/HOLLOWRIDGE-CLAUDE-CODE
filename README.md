@@ -42,3 +42,12 @@ python3 orchestrator.py --git-sync
 ```
 
 See `PHASE_3_SYNTHESIS.md` for the reasoning.
+
+## Canon Accumulation (Phase 4)
+
+Every completed task now writes a record back into `memory/canon.json` under
+its agent's section (`worldbuilding.confirmed_lore`, `brand.confirmed_copy`,
+`research.completed_syntheses`, `content.published_topics`,
+`music.released_content`, `code.changes`), so future cycles' "ESTABLISHED
+CANON" prompt context actually reflects prior output instead of staying
+empty. See `PHASE_4_SYNTHESIS.md`.
