@@ -1,0 +1,35 @@
+name: Push transcript data to n8n
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/transcripts.json"
+      - "data/combined_workflows.json"
+      - "data/combined_peaks.json"
+  workflow_dispatch:   # lets you trigger it manually from the Actions tab at any time
+
+jobs:
+  push-to-n8n:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install python-docx
+
+      - name: Re-run extraction (ensures data files are current)
+        run: |
+          python3 scripts/extract_transcripts.py
+          python3 scripts/cross_reference_workflows.py
+          python3 scripts/peaks_synthesis.py
+
+      - name: Push data to n8n webhook
+        env:
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+        run: python3 scripts/push_to_n8n.py
