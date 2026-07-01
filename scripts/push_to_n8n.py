@@ -101,6 +101,11 @@ def main() -> None:
     print(f"\nSending combined peaks ({peaks.get('file_count', '?')} files, {peaks.get('sentence_count', '?')} sentences) …")
     post(url, {"event": "combined_peaks", **peaks}, "combined_peaks")
 
+    # 4. Lattice graph
+    lattice = load("lattice_graph.json")
+    print(f"\nSending lattice graph ({lattice.get('node_count', '?')} nodes, {lattice.get('edge_count', '?')} edges) …")
+    post(url, {"event": "lattice_graph", **lattice}, "lattice_graph")
+
     print("\nAll payloads delivered successfully.")
 
 

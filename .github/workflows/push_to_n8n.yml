@@ -28,6 +28,7 @@ jobs:
           python3 scripts/extract_transcripts.py
           python3 scripts/cross_reference_workflows.py
           python3 scripts/peaks_synthesis.py
+          python3 scripts/build_lattice.py
 
       - name: Push data to n8n webhook
         env:
