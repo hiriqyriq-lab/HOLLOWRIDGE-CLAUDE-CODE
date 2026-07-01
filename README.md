@@ -51,3 +51,10 @@ its agent's section (`worldbuilding.confirmed_lore`, `brand.confirmed_copy`,
 `music.released_content`, `code.changes`), so future cycles' "ESTABLISHED
 CANON" prompt context actually reflects prior output instead of staying
 empty. See `PHASE_4_SYNTHESIS.md`.
+
+## Budget Cap (Phase 5)
+
+The loop checks `memory/spend.json` before every cycle and skips the cycle
+once today's estimated cost hits `NIL_AGENCY_MAX_DAILY_SPEND_USD` (default
+`$15`). Shared across local and cloud runs like canon. Estimate only — check
+your actual Anthropic billing for real numbers. See `PHASE_5_SYNTHESIS.md`.
