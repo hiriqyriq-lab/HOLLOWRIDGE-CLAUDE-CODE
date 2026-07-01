@@ -205,6 +205,17 @@ def build_system_prompt(agent_name, canon):
         pfx += f"\n\n## RECENT OUTPUTS (avoid repetition)\n```\n{recent}\n```\n"
     return pfx + base
 
+# Phase 7: get_tasks() re-fetches every open nil-agency-task issue each cycle.
+# complete_task() writes a local COMPLETED_DIR record *before* attempting to
+# close the GitHub issue, and swallows close_task() failures (network error,
+# permissions, etc.) as a warning. If closing fails, the issue stays open and
+# — since nothing checked local completion state — got reprocessed (and
+# re-billed, and potentially re-published) on every subsequent cycle forever.
+
+def completed_task_ids():
+    if not COMPLETED_DIR.exists(): return set()
+    return {p.stem for p in COMPLETED_DIR.glob("*.json") if not p.name.startswith("FAILED_")}
+
 def read_queue(gh=None):
     tasks = []
     if QUEUE_FILE.exists():
@@ -212,7 +223,7 @@ def read_queue(gh=None):
         except: pass
     if gh and gh.available():
         try:
-            seen = {t["task_id"] for t in tasks}
+            seen = {t["task_id"] for t in tasks} | completed_task_ids()
             tasks += [t for t in gh.get_tasks() if t["task_id"] not in seen]
         except Exception as e: log.warning(f"GitHub queue: {e}")
     return sorted(tasks, key=lambda t:(t.get("priority",3),t.get("created_at","")))
@@ -239,7 +250,10 @@ def complete_task(task, output_path, summary, gh=None):
         "output_path":output_path,"summary":summary},indent=2))
     if gh and task.get("source")=="github-issue" and task.get("issue_number"):
         try: gh.close_task(task["issue_number"],summary,output_path)
-        except Exception as e: log.warning(f"GitHub close: {e}")
+        except Exception as e:
+            log.warning(f"GitHub close failed for issue #{task['issue_number']}: {e} — "
+                        f"local completion recorded so it won't be reprocessed, but the "
+                        f"issue itself is still open on GitHub and should be closed manually")
     log.info(f"OK {task['task_id'][:8]} -> {output_path}")
 
 def fail_task(task, error):
