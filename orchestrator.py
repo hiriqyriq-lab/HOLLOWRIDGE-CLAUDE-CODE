@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, json, time, uuid, socket, random, logging, traceback, argparse, subprocess
+import os, json, re, time, uuid, socket, random, logging, traceback, argparse, subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 import anthropic
@@ -166,6 +166,54 @@ def update_canon(canon, task, summary, output_path):
         "output_path": output_path,
         "recorded_at": datetime.now(timezone.utc).isoformat(),
     })
+    return canon
+
+# ── Structured canon + contradiction flags (Phase 12) ────────────────────────────
+# CLAUDE.md's worldbuilding output standard promises "cross-reference existing
+# lore entities" and "flag any contradictions with existing canon." Phase 4 only
+# appends flat records to worldbuilding.confirmed_lore — canon.worldbuilding.houses
+# (present in the schema since Phase 2) never gets populated, and nothing ever
+# checks a new output against what's already established. Both promises were
+# unimplemented.
+
+KNOWN_HOUSES = ["Aurveil", "Morrval", "Sylvorne", "Vaelthorn", "Veilwynn"]
+ORIGIN_KEYWORDS = ("founding myth", "origin myth", "canonical origin",
+                    "made them immortal", "became immortal", "origin of the house")
+
+def extract_worldbuilding_entities(text: str) -> list[str]:
+    """Best-effort: which of the five known Houses does this output discuss."""
+    return [h for h in KNOWN_HOUSES if re.search(rf"\b{re.escape(h)}\b", text, re.IGNORECASE)]
+
+def update_worldbuilding_structure(canon, task, text, output_path):
+    """Populate canon.worldbuilding.houses per entity, and flag when a new
+    output makes a founding/origin claim for a House that already has one —
+    a canonical origin should be singular, so a second claim is a signal for
+    human review, not something to silently resolve."""
+    wb = canon.setdefault("worldbuilding", {})
+    houses = wb.setdefault("houses", {})
+    flags = wb.setdefault("contradiction_flags", [])
+    is_origin_claim = any(kw in text.lower() for kw in ORIGIN_KEYWORDS)
+
+    for house in extract_worldbuilding_entities(text):
+        rec = houses.setdefault(house, {
+            "first_seen_task_id": task["task_id"], "mention_count": 0,
+            "has_recorded_origin": False, "outputs": [],
+        })
+        rec["mention_count"] += 1
+        rec["outputs"].append({"task_id": task["task_id"], "output_path": output_path,
+                                "recorded_at": datetime.now(timezone.utc).isoformat()})
+        rec["outputs"] = rec["outputs"][-20:]
+        if is_origin_claim:
+            if rec["has_recorded_origin"]:
+                flags.append({
+                    "house": house, "task_id": task["task_id"], "output_path": output_path,
+                    "note": f"Another origin/founding-myth claim for {house} — "
+                            f"a canonical origin should be singular; review both outputs.",
+                    "flagged_at": datetime.now(timezone.utc).isoformat(),
+                })
+                log.warning(f"  contradiction flag: {house} already has a recorded origin "
+                            f"(task {task['task_id'][:8]} makes another claim)")
+            rec["has_recorded_origin"] = True
     return canon
 
 # ── Budget circuit breaker (Phase 5) ─────────────────────────────────────────────
@@ -474,7 +522,10 @@ def main():
             save_spend(record_spend(spend, MODEL, in_tok, out_tok))
             complete_task(task, opath, summary, gh)
             append_session_log(task["agent"], task["task_id"], summary)
-            save_canon(update_canon(canon, task, summary, opath))
+            canon = update_canon(canon, task, summary, opath)
+            if task["agent"] == "WORLDBUILDING_AGENT":
+                canon = update_worldbuilding_structure(canon, task, text, opath)
+            save_canon(canon)
             if task["agent"]=="CONTENT_AGENT" and dist: dist(text)
             git_sync(task["task_id"])
             rate_limit_streak = 0

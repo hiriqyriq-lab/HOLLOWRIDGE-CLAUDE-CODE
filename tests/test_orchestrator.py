@@ -251,3 +251,45 @@ class TestHeartbeat:
         hb = json.loads(orch.HEARTBEAT_FILE.read_text())
         assert hb["mode"] == "github-actions"
         assert hb["cycle"] == 7
+
+
+class TestStructuredCanonAndContradictions:
+    def test_extract_entities_finds_mentioned_houses(self):
+        text = "House Aurveil and House Morrval clashed over the Sylvorne border."
+        assert set(orch.extract_worldbuilding_entities(text)) == {"Aurveil", "Morrval", "Sylvorne"}
+
+    def test_extract_entities_case_insensitive_and_empty_when_none(self):
+        assert orch.extract_worldbuilding_entities("aurveil rises") == ["Aurveil"]
+        assert orch.extract_worldbuilding_entities("no houses mentioned here") == []
+
+    def test_first_origin_claim_recorded_without_flag(self):
+        task = {"task_id": "t1", "agent": "WORLDBUILDING_AGENT", "instruction": "x"}
+        canon = orch.update_worldbuilding_structure({}, task, "The founding myth of House Aurveil begins...", "/o1")
+        assert canon["worldbuilding"]["houses"]["Aurveil"]["has_recorded_origin"] is True
+        assert canon["worldbuilding"]["contradiction_flags"] == []
+
+    def test_second_origin_claim_for_same_house_is_flagged(self):
+        canon = {}
+        t1 = {"task_id": "t1", "agent": "WORLDBUILDING_AGENT", "instruction": "x"}
+        t2 = {"task_id": "t2", "agent": "WORLDBUILDING_AGENT", "instruction": "y"}
+        canon = orch.update_worldbuilding_structure(canon, t1, "The founding myth of House Aurveil begins...", "/o1")
+        canon = orch.update_worldbuilding_structure(canon, t2, "Another founding myth for House Aurveil claims...", "/o2")
+        assert len(canon["worldbuilding"]["contradiction_flags"]) == 1
+        assert canon["worldbuilding"]["contradiction_flags"][0]["house"] == "Aurveil"
+
+    def test_mention_without_origin_claim_does_not_flag(self):
+        canon = {}
+        t1 = {"task_id": "t1", "agent": "WORLDBUILDING_AGENT", "instruction": "x"}
+        t2 = {"task_id": "t2", "agent": "WORLDBUILDING_AGENT", "instruction": "y"}
+        canon = orch.update_worldbuilding_structure(canon, t1, "The founding myth of House Aurveil begins...", "/o1")
+        canon = orch.update_worldbuilding_structure(canon, t2, "House Aurveil skirmishes with House Morrval.", "/o2")
+        assert canon["worldbuilding"]["contradiction_flags"] == []
+        assert canon["worldbuilding"]["houses"]["Aurveil"]["mention_count"] == 2
+
+    def test_mention_count_and_outputs_accumulate(self):
+        canon = {}
+        for i in range(3):
+            task = {"task_id": f"t{i}", "agent": "WORLDBUILDING_AGENT", "instruction": "x"}
+            canon = orch.update_worldbuilding_structure(canon, task, "House Vaelthorn does something.", f"/o{i}")
+        assert canon["worldbuilding"]["houses"]["Vaelthorn"]["mention_count"] == 3
+        assert len(canon["worldbuilding"]["houses"]["Vaelthorn"]["outputs"]) == 3

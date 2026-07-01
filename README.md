@@ -113,3 +113,12 @@ python3 orchestrator.py --check-heartbeat
 The GitHub Actions workflow now fails loudly (red X) if the last cycle is
 older than `NIL_AGENCY_HEARTBEAT_STALE_SECONDS` (default 2h). See
 `PHASE_11_SYNTHESIS.md`.
+
+## Structured Canon + Contradictions (Phase 12)
+
+Worldbuilding output now populates `memory/canon.json`'s
+`worldbuilding.houses` per entity (mention count, output history) instead
+of only a flat list. A second founding/origin-myth claim for a House that
+already has one recorded gets appended to
+`worldbuilding.contradiction_flags` and logged — for review, not
+auto-resolved. See `PHASE_12_SYNTHESIS.md`.
