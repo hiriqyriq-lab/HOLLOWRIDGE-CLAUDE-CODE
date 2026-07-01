@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, json, time, uuid, socket, logging, traceback, argparse, subprocess
+import os, json, time, uuid, socket, random, logging, traceback, argparse, subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 import anthropic
@@ -30,6 +30,8 @@ LOCK_TTL      = int(os.getenv("NIL_AGENCY_LOCK_TTL","900"))   # 15 min: local pm
                                                                 # task — see PHASE_3_SYNTHESIS.md
 GIT_SYNC      = os.getenv("NIL_AGENCY_GIT_SYNC","0") == "1"
 MAX_DAILY_SPEND_USD = float(os.getenv("NIL_AGENCY_MAX_DAILY_SPEND_USD","15.0"))
+RATE_LIMIT_BASE_SLEEP = float(os.getenv("NIL_AGENCY_RATE_LIMIT_BASE_SLEEP","30"))
+RATE_LIMIT_MAX_SLEEP  = float(os.getenv("NIL_AGENCY_RATE_LIMIT_MAX_SLEEP","600"))
 # Approximate $/million tokens. Not exact billing — a conservative circuit
 # breaker, not an invoice. See PHASE_5_SYNTHESIS.md.
 PRICE_PER_MTOK = {"default": {"input": 3.0, "output": 15.0}}
@@ -302,6 +304,17 @@ def gen_auto():
             "context_files":[],"created_at":datetime.now(timezone.utc).isoformat(),
             "deadline":None,"source":"autonomous"}
 
+# ── Rate-limit backoff with jitter (Phase 10) ────────────────────────────────────
+# The old handler slept a flat 60s on every RateLimitError, with no escalation
+# for repeated hits and no jitter. That was already weak; Phase 3's lock now
+# lets local and cloud runs alternate turns on the same account, so a shared
+# rate limit could put both into the same flat 60s cadence — synchronized
+# retries competing for the same quota instead of spreading out.
+
+def backoff_seconds(attempt: int) -> float:
+    base = min(RATE_LIMIT_MAX_SLEEP, RATE_LIMIT_BASE_SLEEP * (2 ** attempt))
+    return base + random.uniform(0, base * 0.25)
+
 # ── Config validation (Phase 9) ─────────────────────────────────────────────────
 # README said `cp .env.example .env` since Phase 2; that file never existed.
 # Nothing validated required config before hitting a paid API call either —
@@ -394,6 +407,7 @@ def main():
     log.info(f"NIL AGENCY v2 | mode={args.mode} | cycles={'inf' if not args.cycles else args.cycles}")
 
     cycle = 0
+    rate_limit_streak = 0
     while True:
         if args.cycles and cycle >= args.cycles:
             log.info(f"Done: {cycle} cycles"); break
@@ -427,8 +441,12 @@ def main():
             save_canon(update_canon(canon, task, summary, opath))
             if task["agent"]=="CONTENT_AGENT" and dist: dist(text)
             git_sync(task["task_id"])
+            rate_limit_streak = 0
         except anthropic.RateLimitError:
-            log.warning("Rate limited 60s"); time.sleep(60)
+            sleep_s = backoff_seconds(rate_limit_streak)
+            rate_limit_streak += 1
+            log.warning(f"Rate limited (streak {rate_limit_streak}) — backing off {sleep_s:.0f}s")
+            time.sleep(sleep_s)
         except anthropic.APIError as e:
             log_error("api",e); time.sleep(30)
         except KeyboardInterrupt:

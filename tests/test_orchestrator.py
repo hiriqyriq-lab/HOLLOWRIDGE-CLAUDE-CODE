@@ -203,3 +203,20 @@ class TestConfigCheck:
         monkeypatch.setattr(orch.anthropic, "Anthropic",
                              lambda *a, **k: (_ for _ in ()).throw(AssertionError("should not construct client")))
         orch.run_config_check()
+
+
+class TestRateLimitBackoff:
+    def test_grows_with_attempt_number(self):
+        assert orch.backoff_seconds(0) < orch.backoff_seconds(1) < orch.backoff_seconds(2)
+
+    def test_never_below_base_sleep(self):
+        for attempt in range(5):
+            assert orch.backoff_seconds(attempt) >= orch.RATE_LIMIT_BASE_SLEEP
+
+    def test_capped_at_max_sleep_plus_jitter(self):
+        # large attempt count should saturate at the max, not grow unbounded
+        assert orch.backoff_seconds(50) <= orch.RATE_LIMIT_MAX_SLEEP * 1.25
+
+    def test_jitter_makes_repeated_calls_vary(self):
+        values = {orch.backoff_seconds(2) for _ in range(20)}
+        assert len(values) > 1  # near-certain with random jitter over 20 draws

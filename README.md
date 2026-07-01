@@ -93,3 +93,10 @@ python3 orchestrator.py --check
 ```
 
 See `PHASE_9_SYNTHESIS.md`.
+
+## Rate-Limit Backoff (Phase 10)
+
+Rate-limit retries now back off exponentially with jitter
+(`NIL_AGENCY_RATE_LIMIT_BASE_SLEEP`/`_MAX_SLEEP`, defaults 30s/600s) instead
+of a flat 60s sleep, so local and cloud runs sharing one API key don't retry
+in lockstep. See `PHASE_10_SYNTHESIS.md`.
