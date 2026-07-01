@@ -20,6 +20,7 @@ def isolated_dirs(tmp_path, monkeypatch):
     monkeypatch.setattr(orch, "OUTPUTS_DIR", tmp_path / "outputs")
     monkeypatch.setattr(orch, "MEMORY_DIR", tmp_path / "memory")
     monkeypatch.setattr(orch, "QUEUE_FILE", tmp_path / "tasks" / "queue.json")
+    monkeypatch.setattr(orch, "BACKLOG_FILE", tmp_path / "tasks" / "backlog.json")
     monkeypatch.setattr(orch, "CANON_FILE", tmp_path / "memory" / "canon.json")
     monkeypatch.setattr(orch, "SESSION_LOG", tmp_path / "memory" / "session_log.md")
     monkeypatch.setattr(orch, "LOCK_FILE", tmp_path / "tasks" / ".lock.json")
@@ -293,3 +294,38 @@ class TestStructuredCanonAndContradictions:
             canon = orch.update_worldbuilding_structure(canon, task, "House Vaelthorn does something.", f"/o{i}")
         assert canon["worldbuilding"]["houses"]["Vaelthorn"]["mention_count"] == 3
         assert len(canon["worldbuilding"]["houses"]["Vaelthorn"]["outputs"]) == 3
+
+
+class TestBacklogFallback:
+    def test_missing_backlog_file_returns_empty(self):
+        assert orch.read_backlog() == []
+
+    def test_pending_tasks_sorted_by_priority_then_created_at(self):
+        orch.BACKLOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        orch.BACKLOG_FILE.write_text(json.dumps([
+            {"task_id": "bg-2", "agent": "CONTENT_AGENT", "priority": 4, "status": "pending", "created_at": "2020-01-02"},
+            {"task_id": "bg-1", "agent": "WORLDBUILDING_AGENT", "priority": 4, "status": "pending", "created_at": "2020-01-01"},
+        ]))
+        tasks = orch.read_backlog()
+        assert [t["task_id"] for t in tasks] == ["bg-1", "bg-2"]
+
+    def test_already_completed_backlog_task_is_excluded(self):
+        orch.BACKLOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        orch.BACKLOG_FILE.write_text(json.dumps([
+            {"task_id": "bg-1", "agent": "CONTENT_AGENT", "priority": 4, "status": "pending", "created_at": "x"},
+        ]))
+        orch.COMPLETED_DIR.mkdir(parents=True, exist_ok=True)
+        (orch.COMPLETED_DIR / "bg-1.json").write_text("{}")
+        assert orch.read_backlog() == []
+
+    def test_non_pending_status_is_excluded(self):
+        orch.BACKLOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        orch.BACKLOG_FILE.write_text(json.dumps([
+            {"task_id": "bg-1", "agent": "CONTENT_AGENT", "priority": 4, "status": "done", "created_at": "x"},
+        ]))
+        assert orch.read_backlog() == []
+
+    def test_corrupt_backlog_file_returns_empty(self):
+        orch.BACKLOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+        orch.BACKLOG_FILE.write_text("not json")
+        assert orch.read_backlog() == []

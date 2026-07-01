@@ -122,3 +122,11 @@ of only a flat list. A second founding/origin-myth claim for a House that
 already has one recorded gets appended to
 `worldbuilding.contradiction_flags` and logged — for review, not
 auto-resolved. See `PHASE_12_SYNTHESIS.md`.
+
+## Backlog Fallback Tier (Phase 13)
+
+`CLAUDE.md`'s documented queue -> backlog -> self-generated fallback order
+is now actually implemented. Add standing BACKGROUND-priority tasks in
+`tasks/backlog.json` (same schema as `queue.json`) and they'll run whenever
+`queue.json` is empty, before the built-in autonomous task list kicks in.
+See `PHASE_13_SYNTHESIS.md`.
