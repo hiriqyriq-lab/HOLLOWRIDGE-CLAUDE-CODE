@@ -1,6 +1,10 @@
 # NIL AGENCY
 Autonomous Creative-Technical Intelligence | Amalgamated Omnipresence
 
+See `PHASE_INDEX.md` for the full build history (Phases 1-14), an
+architecture overview of the main loop, and links to every phase's
+contrapolation doc.
+
 ## Deploy (choose one)
 
 ### GitHub Actions (free, zero server)
