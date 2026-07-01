@@ -58,3 +58,9 @@ The loop checks `memory/spend.json` before every cycle and skips the cycle
 once today's estimated cost hits `NIL_AGENCY_MAX_DAILY_SPEND_USD` (default
 `$15`). Shared across local and cloud runs like canon. Estimate only — check
 your actual Anthropic billing for real numbers. See `PHASE_5_SYNTHESIS.md`.
+
+## Social Publishing Defaults to Draft (Phase 6)
+
+Metricool distribution now saves posts as drafts by default — nothing goes
+live automatically. Set `NIL_AGENCY_AUTO_PUBLISH=1` to actually publish. See
+`PHASE_6_SYNTHESIS.md`.
