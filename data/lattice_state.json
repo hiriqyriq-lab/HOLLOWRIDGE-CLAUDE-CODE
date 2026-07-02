@@ -3999,6 +3999,71 @@
       "solved_at": "2026-07-01T23:58:27.827109+00:00",
       "type": "coordinate",
       "label": "Coordinate 816"
+    },
+    "coord_720": {
+      "solved_at": "2026-07-02T08:28:25.770503+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 720"
+    },
+    "coord_615": {
+      "solved_at": "2026-07-02T08:28:25.774446+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 615"
+    },
+    "coord_974": {
+      "solved_at": "2026-07-02T08:28:25.778201+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 974"
+    },
+    "coord_701": {
+      "solved_at": "2026-07-02T08:28:25.782177+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 701"
+    },
+    "coord_914": {
+      "solved_at": "2026-07-02T08:28:25.785921+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 914"
+    },
+    "coord_793": {
+      "solved_at": "2026-07-02T08:28:25.789676+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 793"
+    },
+    "coord_877": {
+      "solved_at": "2026-07-02T08:28:25.793367+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 877"
+    },
+    "coord_703": {
+      "solved_at": "2026-07-02T08:28:25.797049+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 703"
+    },
+    "file::终极术语宣言.docx": {
+      "solved_at": "2026-07-02T08:28:25.800820+00:00",
+      "type": "file",
+      "label": "终极术语宣言.docx"
+    },
+    "coord_741": {
+      "solved_at": "2026-07-02T08:28:25.810851+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 741"
+    },
+    "coord_619": {
+      "solved_at": "2026-07-02T08:28:25.820648+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 619"
+    },
+    "coord_726": {
+      "solved_at": "2026-07-02T08:28:25.830424+00:00",
+      "type": "coordinate",
+      "label": "Coordinate 726"
+    },
+    "file::结构概率框架更新.docx": {
+      "solved_at": "2026-07-02T08:28:25.840287+00:00",
+      "type": "file",
+      "label": "结构概率框架更新.docx"
     }
   },
   "solve_runs": [
@@ -4050,7 +4115,14 @@
       "elapsed_s": 1.37,
       "cumulative_solved": 800,
       "dry_run": false
+    },
+    {
+      "timestamp": "2026-07-02T08:28:25.840391+00:00",
+      "nodes_solved": 13,
+      "elapsed_s": 0.07,
+      "cumulative_solved": 813,
+      "dry_run": false
     }
   ],
-  "total_solved": 800
+  "total_solved": 813
 }
