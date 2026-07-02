@@ -48,6 +48,11 @@ jobs:
           N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
         run: python3 scripts/autosolve_lattice.py
 
+      - name: Run FORGE advisory review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 scripts/forge_advisor.py || echo "FORGE skipped (no API key)"
+
       - name: Commit solved contrapolations back to repo
         run: |
           git config user.name  "github-actions[bot]"
@@ -56,7 +61,7 @@ jobs:
                   data/lattice_graph.json data/LATTICE.md data/transcripts.json \
                   data/combined_workflows.json data/combined_peaks.json \
                   data/COMBINED_PEAKS.md data/COMBINED_WORKFLOWS.md data/MEMORY.md \
-                  data/transcripts.csv || true
+                  data/transcripts.csv data/FORGE_REVIEW.md data/forge_log.json || true
           git diff --cached --quiet || \
             git commit -m "chore: autosolve lattice — $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
           git push origin main
