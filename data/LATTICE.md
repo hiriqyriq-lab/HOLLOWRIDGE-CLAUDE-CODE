@@ -1,6 +1,6 @@
 # Hollowridge Lattice Structure
 
-**813 nodes · 6658 edges**
+**813 nodes · 6690 edges**
 
 ## Concept Nodes
 - **Synthesis** — 51 hits across 51 file(s)
@@ -163,6 +163,6 @@
 - `automation` ↔ `synthesis` (weight 23, 23 file(s))
 - `coord_100` ↔ `coordinate` (weight 23, 23 file(s))
 - `coord_100` ↔ `synthesis` (weight 23, 23 file(s))
-- `coord_000` ↔ `synthesis` (weight 23, 23 file(s))
 - `bloodline` ↔ `node` (weight 22, 22 file(s))
-- `coord_000` ↔ `coordinate` (weight 22, 22 file(s))
+- `eschatology` ↔ `terminal` (weight 21, 21 file(s))
+- `automation` ↔ `node` (weight 21, 21 file(s))
