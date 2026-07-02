@@ -1,6 +1,6 @@
 # Hollowridge Lattice Structure
 
-**813 nodes · 6921 edges**
+**813 nodes · 6993 edges**
 
 ## Concept Nodes
 - **Synthesis** — 51 hits across 51 file(s)
